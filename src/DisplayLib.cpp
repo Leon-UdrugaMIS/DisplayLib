@@ -14,10 +14,11 @@ constexpr uint8_t SEG_E = 1 << 4;
 constexpr uint8_t SEG_F = 1 << 5;
 constexpr uint8_t SEG_G = 1 << 6;
 constexpr uint8_t SEG_DP = 1 << 7;
-constexpr long kMaxScaledWithSign = 1000;
-constexpr long kMaxScaledWithoutSign = 10000;
+constexpr long kMaxScaledValueNegative = 1000;
+constexpr long kMaxScaledValuePositive = 10000;
 constexpr size_t kNumberBufferSize = 24;
 constexpr size_t kFloatBufferSize = 26;
+constexpr float kPowersOfTen[] = {1.0f, 10.0f, 100.0f, 1000.0f};
 }
 
 DisplayLib::DisplayLib(const uint8_t digitPins[4], const uint8_t segmentPins[8], bool commonAnode)
@@ -204,9 +205,9 @@ void DisplayLib::displayFloat(float value) {
   long scaled = 0;
 
   for (int decimals = 3; decimals >= 0; --decimals) {
-    float factor = powf(10.0f, static_cast<float>(decimals));
+    float factor = kPowersOfTen[decimals];
     long candidate = lroundf(absValue * factor);
-    long maxDigits = negative ? kMaxScaledWithSign : kMaxScaledWithoutSign;
+    long maxDigits = negative ? kMaxScaledValueNegative : kMaxScaledValuePositive;
     if (candidate >= maxDigits) {
       continue;
     }
