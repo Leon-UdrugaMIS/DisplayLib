@@ -16,6 +16,7 @@ constexpr uint8_t SEG_G = 1 << 6;
 constexpr uint8_t SEG_DP = 1 << 7;
 constexpr long kMaxScaledValueNegative = 1000;
 constexpr long kMaxScaledValuePositive = 10000;
+constexpr size_t kIntegerBufferSize = 6;
 constexpr size_t kNumberBufferSize = 24;
 constexpr size_t kFloatBufferSize = 26;
 constexpr float kPowersOfTen[] = {1.0f, 10.0f, 100.0f, 1000.0f};
@@ -171,7 +172,7 @@ void DisplayLib::displayInteger(int value, bool leadingZeros) {
     return;
   }
 
-  char repr[6];
+  char repr[kIntegerBufferSize];
   if (leadingZeros) {
     if (asLong < 0) {
       snprintf(repr, sizeof(repr), "-%03ld", labs(asLong));
@@ -293,11 +294,13 @@ void DisplayLib::displayText(const char* text) {
   }
 
   size_t len = strlen(text);
+  bool wasTruncated = false;
   if (len > kDigitCount) {
     len = kDigitCount;
+    wasTruncated = true;
   }
 
-  uint8_t start = static_cast<uint8_t>((kDigitCount - len) / 2);
+  uint8_t start = wasTruncated ? 0 : static_cast<uint8_t>((kDigitCount - len) / 2);
 
   for (size_t i = 0; i < len; ++i) {
     _buffer[start + i] = encodeChar(text[i]);
@@ -315,7 +318,7 @@ void DisplayLib::displaySpecialInt(float value) {
     _buffer[i] = 0;
   }
 
-  char repr[6];
+  char repr[kIntegerBufferSize];
   snprintf(repr, sizeof(repr), "%ld", roundedValue);
   size_t len = strlen(repr);
   if (len > 3) {
