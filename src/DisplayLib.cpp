@@ -14,8 +14,8 @@ constexpr uint8_t SEG_E = 1 << 4;
 constexpr uint8_t SEG_F = 1 << 5;
 constexpr uint8_t SEG_G = 1 << 6;
 constexpr uint8_t SEG_DP = 1 << 7;
-constexpr long kMaxScaledValueNegative = 1000;
-constexpr long kMaxScaledValuePositive = 10000;
+constexpr long kMaxScaledValueWithSign = 1000;
+constexpr long kMaxScaledValueNoSign = 10000;
 constexpr size_t kIntegerBufferSize = 6;
 constexpr size_t kNumberBufferSize = 24;
 constexpr size_t kFloatBufferSize = 26;
@@ -208,7 +208,7 @@ void DisplayLib::displayFloat(float value) {
   for (int decimals = 3; decimals >= 0; --decimals) {
     float factor = kPowersOfTen[decimals];
     long candidate = lroundf(absValue * factor);
-    long maxDigits = negative ? kMaxScaledValueNegative : kMaxScaledValuePositive;
+    long maxDigits = negative ? kMaxScaledValueWithSign : kMaxScaledValueNoSign;
     if (candidate >= maxDigits) {
       continue;
     }
@@ -300,6 +300,7 @@ void DisplayLib::displayText(const char* text) {
     wasTruncated = true;
   }
 
+  // Integer division intentionally favors left-center for odd padding widths.
   uint8_t start = wasTruncated ? 0 : static_cast<uint8_t>((kDigitCount - len) / 2);
 
   for (size_t i = 0; i < len; ++i) {
