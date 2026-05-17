@@ -14,6 +14,10 @@ constexpr uint8_t SEG_E = 1 << 4;
 constexpr uint8_t SEG_F = 1 << 5;
 constexpr uint8_t SEG_G = 1 << 6;
 constexpr uint8_t SEG_DP = 1 << 7;
+constexpr long kMaxScaledWithSign = 1000;
+constexpr long kMaxScaledWithoutSign = 10000;
+constexpr size_t kNumberBufferSize = 24;
+constexpr size_t kFloatBufferSize = 26;
 }
 
 DisplayLib::DisplayLib(const uint8_t digitPins[4], const uint8_t segmentPins[8], bool commonAnode)
@@ -202,7 +206,7 @@ void DisplayLib::displayFloat(float value) {
   for (int decimals = 3; decimals >= 0; --decimals) {
     float factor = powf(10.0f, static_cast<float>(decimals));
     long candidate = lroundf(absValue * factor);
-    long maxDigits = negative ? 1000 : 10000;
+    long maxDigits = negative ? kMaxScaledWithSign : kMaxScaledWithoutSign;
     if (candidate >= maxDigits) {
       continue;
     }
@@ -229,14 +233,14 @@ void DisplayLib::displayFloat(float value) {
   long integerPart = scaled / divisor;
   long fractionPart = scaled % divisor;
 
-  char numberPart[24];
+  char numberPart[kNumberBufferSize];
   if (bestDecimals == 0) {
     snprintf(numberPart, sizeof(numberPart), "%ld", integerPart);
   } else {
     snprintf(numberPart, sizeof(numberPart), "%ld.%0*ld", integerPart, bestDecimals, fractionPart);
   }
 
-  char repr[26];
+  char repr[kFloatBufferSize];
   if (negative) {
     snprintf(repr, sizeof(repr), "-%s", numberPart);
   } else {
