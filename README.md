@@ -1,6 +1,6 @@
 # DisplayLib: Complete & Advanced Tutorial
 
-_DisplayLib_ is a robust Arduino library for driving 4-digit 7-segment LED displays (common cathode or anode). This guide covers everything—from installation and wiring to all API features, advanced tricks, and custom segment control!
+_DisplayLib_ is a robust Arduino library for driving 4-digit 7-segment LED displays (common cathode or anode). This guide covers everything—from installation and wiring to all API features, brightness control, advanced tricks, and custom segment control!
 
 ---
 
@@ -13,7 +13,9 @@ _DisplayLib_ is a robust Arduino library for driving 4-digit 7-segment LED displ
     - [Constructor Options](#constructor-options)
     - [begin()](#begin)
     - [refresh()](#refresh)
+    - [setBrightness()](#setbrightness)
     - [Displaying Integers](#displaying-integers)
+    - [Displaying Hexadecimal](#displaying-hexadecimal)
     - [Displaying Floats](#displaying-floats)
     - [Text Display](#text-display)
     - [Special Outputs](#special-outputs)
@@ -138,6 +140,15 @@ void loop() {
 }
 ```
 
+### setBrightness()
+
+Set the global display brightness (software duty cycle). Use `0` to turn off the display, `100` for full brightness.
+
+```cpp
+display.setBrightness(25);  // 25% brightness
+display.setBrightness(100); // full brightness
+```
+
 ### Displaying Integers
 
 Display an integer value (up to 4 digits), optionally with leading zeros:
@@ -145,6 +156,15 @@ Display an integer value (up to 4 digits), optionally with leading zeros:
 ```cpp
 display.displayInteger(42, false);   // Displays '42'
 display.displayInteger(7, true);     // Displays '0007'
+```
+
+### Displaying Hexadecimal
+
+Display a 16-bit value in hex (0x0000–0xFFFF). Use `leadingZeros` to show all 4 digits.
+
+```cpp
+display.displayHex(0x2A, false); // '2A'
+display.displayHex(0x00FF, true); // '00FF'
 ```
 
 ### Displaying Floats
@@ -344,6 +364,7 @@ display.setRawDigit(3, 0b10000111);
 ## Best Practices & Tips
 
 - Always call `refresh()` as frequently as possible.
+- Use `setBrightness()` for global dimming; very low values require frequent `refresh()` to avoid flicker.
 - Prefer non-blocking timing (using `millis()`) over `delay()` for smooth visuals.
 - Use `display.clear()` before changing modes to avoid ghosting.
 - Consider using transistors for digit lines if high brightness/current is needed.

@@ -23,7 +23,10 @@ constexpr float kPowersOfTen[] = {1.0f, 10.0f, 100.0f, 1000.0f};
 }
 
 DisplayLib::DisplayLib(const uint8_t digitPins[4], const uint8_t segmentPins[8], bool commonAnode)
-    : _activeDigit(0), _commonAnode(commonAnode) {
+    : _activeDigit(0),
+      _commonAnode(commonAnode),
+      _brightness(kBrightnessSteps),
+      _brightnessPhase(0) {
   for (uint8_t i = 0; i < kDigitCount; ++i) {
     _digitPins[i] = digitPins[i];
     _buffer[i] = 0;
@@ -65,9 +68,15 @@ void DisplayLib::writeSegments(uint8_t segmentMask) {
 
 void DisplayLib::refresh() {
   setAllDigitsOff();
-  writeSegments(_buffer[_activeDigit]);
-  writeDigit(_activeDigit, true);
+  const bool visible = (_brightness >= kBrightnessSteps) || (_brightnessPhase < _brightness);
+  if (visible) {
+    writeSegments(_buffer[_activeDigit]);
+    writeDigit(_activeDigit, true);
+  } else {
+    writeSegments(0);
+  }
   _activeDigit = (_activeDigit + 1) % kDigitCount;
+  _brightnessPhase = (_brightnessPhase + 1) % kBrightnessSteps;
 }
 
 void DisplayLib::clear() {
@@ -181,6 +190,30 @@ void DisplayLib::displayInteger(int value, bool leadingZeros) {
     }
   } else {
     snprintf(repr, sizeof(repr), "%ld", asLong);
+  }
+
+  size_t len = strlen(repr);
+  if (len > kDigitCount) {
+    displayText("Err");
+    return;
+  }
+
+  uint8_t start = static_cast<uint8_t>(kDigitCount - len);
+  for (size_t i = 0; i < len; ++i) {
+    _buffer[start + i] = encodeChar(repr[i]);
+  }
+}
+
+void DisplayLib::displayHex(uint16_t value, bool leadingZeros) {
+  for (uint8_t i = 0; i < kDigitCount; ++i) {
+    _buffer[i] = 0;
+  }
+
+  char repr[kIntegerBufferSize];
+  if (leadingZeros) {
+    snprintf(repr, sizeof(repr), "%04X", value);
+  } else {
+    snprintf(repr, sizeof(repr), "%X", value);
   }
 
   size_t len = strlen(repr);
@@ -333,6 +366,18 @@ void DisplayLib::displaySpecialInt(float value) {
   }
 
   _buffer[3] = degreeSymbolMask();
+}
+
+void DisplayLib::setBrightness(uint8_t percent) {
+  if (percent > kBrightnessSteps) {
+    percent = kBrightnessSteps;
+  }
+  _brightness = percent;
+  _brightnessPhase = 0;
+  if (_brightness == 0) {
+    setAllDigitsOff();
+    writeSegments(0);
+  }
 }
 
 void DisplayLib::setRawDigit(uint8_t digitIndex, uint8_t segmentMask) {
