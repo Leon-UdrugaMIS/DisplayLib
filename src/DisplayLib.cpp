@@ -17,6 +17,7 @@ constexpr uint8_t SEG_DP = 1 << 7;
 constexpr long kMaxScaledValueWithSign = 1000;
 constexpr long kMaxScaledValueNoSign = 10000;
 constexpr size_t kIntegerBufferSize = 6;
+constexpr size_t kHexBufferSize = 6;
 constexpr size_t kNumberBufferSize = 24;
 constexpr size_t kFloatBufferSize = 26;
 constexpr float kPowersOfTen[] = {1.0f, 10.0f, 100.0f, 1000.0f};
@@ -182,7 +183,7 @@ void DisplayLib::displayInteger(int value, bool leadingZeros) {
     return;
   }
 
-  char repr[kIntegerBufferSize];
+  char repr[kHexBufferSize];
   if (leadingZeros) {
     if (asLong < 0) {
       snprintf(repr, sizeof(repr), "-%03ld", labs(asLong));
