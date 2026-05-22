@@ -69,7 +69,7 @@ void DisplayLib::writeSegments(uint8_t segmentMask) {
 
 void DisplayLib::refresh() {
   setAllDigitsOff();
-  const bool fullBrightness = (_brightness >= kBrightnessSteps);
+  const bool fullBrightness = (_brightness == kBrightnessSteps);
   const bool visible = fullBrightness || (_brightnessPhase < _brightness);
   if (visible) {
     writeSegments(_buffer[_activeDigit]);
@@ -197,6 +197,9 @@ void DisplayLib::displayInteger(int value, bool leadingZeros) {
   size_t len = strlen(repr);
   if (len > kDigitCount) {
     displayText("Err");
+    return;
+  }
+  if (len == 0) {
     return;
   }
 

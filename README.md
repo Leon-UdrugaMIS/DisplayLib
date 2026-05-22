@@ -364,7 +364,7 @@ display.setRawDigit(3, 0b10000111);
 ## Best Practices & Tips
 
 - Always call `refresh()` as frequently as possible.
-- Use `setBrightness()` for global dimming; very low values require frequent `refresh()` to avoid flicker.
+- Use `setBrightness()` for global dimming; for values below 10, aim for 200+ `refresh()` calls per second to avoid flicker.
 - Prefer non-blocking timing (using `millis()`) over `delay()` for smooth visuals.
 - Use `display.clear()` before changing modes to avoid ghosting.
 - Consider using transistors for digit lines if high brightness/current is needed.
