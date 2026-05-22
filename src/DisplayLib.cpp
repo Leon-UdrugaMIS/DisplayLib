@@ -183,7 +183,7 @@ void DisplayLib::displayInteger(int value, bool leadingZeros) {
     return;
   }
 
-  char repr[kHexBufferSize];
+  char repr[kIntegerBufferSize];
   if (leadingZeros) {
     if (asLong < 0) {
       snprintf(repr, sizeof(repr), "-%03ld", labs(asLong));
@@ -211,7 +211,7 @@ void DisplayLib::displayHex(uint16_t value, bool leadingZeros) {
     _buffer[i] = 0;
   }
 
-  char repr[kIntegerBufferSize];
+  char repr[kHexBufferSize];
   if (leadingZeros) {
     snprintf(repr, sizeof(repr), "%04X", value);
   } else {
