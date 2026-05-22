@@ -68,7 +68,8 @@ void DisplayLib::writeSegments(uint8_t segmentMask) {
 
 void DisplayLib::refresh() {
   setAllDigitsOff();
-  const bool visible = (_brightness >= kBrightnessSteps) || (_brightnessPhase < _brightness);
+  const bool fullBrightness = (_brightness >= kBrightnessSteps);
+  const bool visible = fullBrightness || (_brightnessPhase < _brightness);
   if (visible) {
     writeSegments(_buffer[_activeDigit]);
     writeDigit(_activeDigit, true);
@@ -368,11 +369,11 @@ void DisplayLib::displaySpecialInt(float value) {
   _buffer[3] = degreeSymbolMask();
 }
 
-void DisplayLib::setBrightness(uint8_t percent) {
-  if (percent > kBrightnessSteps) {
-    percent = kBrightnessSteps;
+void DisplayLib::setBrightness(uint8_t level) {
+  if (level > kBrightnessSteps) {
+    level = kBrightnessSteps;
   }
-  _brightness = percent;
+  _brightness = level;
   _brightnessPhase = 0;
   if (_brightness == 0) {
     setAllDigitsOff();

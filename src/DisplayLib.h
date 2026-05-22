@@ -16,7 +16,7 @@ class DisplayLib {
   void displayFloat(float value);
   void displayText(const char* text);
   void displaySpecialInt(float value);
-  void setBrightness(uint8_t percent);
+  void setBrightness(uint8_t level);
 
   // Extra helper for custom segment control (segments are a,b,c,d,e,f,g,dp)
   void setRawDigit(uint8_t digitIndex, uint8_t segmentMask);
