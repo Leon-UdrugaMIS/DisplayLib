@@ -1,7 +1,7 @@
 #include "../DisplayExampleCommon.h"
 
 DisplayLib display(kDigitPins, kSegmentPins, false);
-float specialIntValues[] = {22.5f, -3.2f};
+float specialValues[] = {22.5f, -3.2f};
 uint8_t index = 0;
 
 void setup() {
@@ -9,7 +9,7 @@ void setup() {
 }
 
 void loop() {
-  display.displaySpecialInt(specialIntValues[index]);
+  display.displaySpecialInt(specialValues[index]);
   pumpDisplay(display, 1500);
-  index = (index + 1) % (sizeof(specialIntValues) / sizeof(specialIntValues[0]));
+  index = (index + 1) % (sizeof(specialValues) / sizeof(specialValues[0]));
 }
