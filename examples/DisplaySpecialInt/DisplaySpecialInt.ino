@@ -1,6 +1,7 @@
 #include "../DisplayExampleCommon.h"
 
 DisplayLib display(kDigitPins, kSegmentPins, false);
+// displaySpecialInt() rounds these float inputs before showing the degree symbol.
 float specialValues[] = {22.5f, -3.2f};
 uint8_t index = 0;
 
