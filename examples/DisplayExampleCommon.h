@@ -8,11 +8,8 @@ constexpr uint8_t kSegmentPins[8] = {6, 7, 8, 9, 10, 11, 12, 13};
 
 inline void pumpDisplay(DisplayLib& display, unsigned long durationMs) {
   const unsigned long start = millis();
-  while (true) {
-    const unsigned long elapsed = millis() - start;
-    if (elapsed >= durationMs) {
-      break;
-    }
+  // Unsigned subtraction keeps this safe across millis() wraparound.
+  while ((millis() - start) < durationMs) {
     display.refresh();
   }
 }

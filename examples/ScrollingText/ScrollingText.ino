@@ -8,7 +8,7 @@ void setup() {
 }
 
 void loop() {
-  for (size_t i = 0; i < sizeof(message) - 3; ++i) {
+  for (size_t i = 0; i < sizeof(message) - 4; ++i) {
     char window[5] = {0};
     for (uint8_t j = 0; j < 4; ++j) {
       window[j] = message[i + j];
