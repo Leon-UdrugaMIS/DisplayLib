@@ -11,6 +11,6 @@ void setup() {
 void loop() {
   display.displayText("bri");
   display.setBrightness(brightnessLevels[index]);
-  pumpDisplay(display, 1500);
+  refreshDisplayFor(display, 1500);
   index = (index + 1) % (sizeof(brightnessLevels) / sizeof(brightnessLevels[0]));
 }

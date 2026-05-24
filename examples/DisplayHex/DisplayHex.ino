@@ -9,6 +9,6 @@ void setup() {
 
 void loop() {
   display.displayHex(showPaddedHex ? 0x00FF : 0x2A, showPaddedHex);
-  pumpDisplay(display, 1500);
+  refreshDisplayFor(display, 1500);
   showPaddedHex = !showPaddedHex;
 }

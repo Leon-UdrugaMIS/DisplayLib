@@ -8,7 +8,7 @@ void setup() {
 
 void loop() {
   display.displayText("HELP");
-  pumpDisplay(display, 1000);
+  refreshDisplayFor(display, 1000);
   display.clear();
-  pumpDisplay(display, 1000);
+  refreshDisplayFor(display, 1000);
 }

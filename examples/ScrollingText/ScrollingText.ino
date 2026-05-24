@@ -14,6 +14,6 @@ void loop() {
       window[j] = message[i + j];
     }
     display.displayText(window);
-    pumpDisplay(display, 300);
+    refreshDisplayFor(display, 300);
   }
 }

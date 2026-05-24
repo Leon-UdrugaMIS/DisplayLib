@@ -11,6 +11,6 @@ void setup() {
 
 void loop() {
   display.displaySpecialInt(specialValues[index]);
-  pumpDisplay(display, 1500);
+  refreshDisplayFor(display, 1500);
   index = (index + 1) % (sizeof(specialValues) / sizeof(specialValues[0]));
 }

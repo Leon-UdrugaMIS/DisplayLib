@@ -9,6 +9,6 @@ void setup() {
 void loop() {
   for (int i = 0; i <= 9999; ++i) {
     display.displayInteger(i, true);
-    pumpDisplay(display, 40);
+    refreshDisplayFor(display, 40);
   }
 }

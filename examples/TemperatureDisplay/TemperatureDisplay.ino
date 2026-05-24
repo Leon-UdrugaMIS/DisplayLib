@@ -9,7 +9,7 @@ void setup() {
 
 void loop() {
   display.displayFloat(temperature);
-  pumpDisplay(display, 1000);
+  refreshDisplayFor(display, 1000);
   temperature += 0.3f;
   if (temperature > 25.0f) {
     temperature = 21.5f;

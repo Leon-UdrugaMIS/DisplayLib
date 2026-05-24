@@ -9,6 +9,6 @@ void setup() {
 
 void loop() {
   display.displayInteger(showLeadingZeros ? 7 : 42, showLeadingZeros);
-  pumpDisplay(display, 2000);
+  refreshDisplayFor(display, 2000);
   showLeadingZeros = !showLeadingZeros;
 }

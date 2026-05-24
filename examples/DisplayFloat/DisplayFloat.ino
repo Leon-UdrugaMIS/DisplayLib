@@ -10,6 +10,6 @@ void setup() {
 
 void loop() {
   display.displayFloat(values[index]);
-  pumpDisplay(display, 1500);
+  refreshDisplayFor(display, 1500);
   index = (index + 1) % (sizeof(values) / sizeof(values[0]));
 }

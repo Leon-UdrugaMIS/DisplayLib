@@ -10,6 +10,6 @@ void setup() {
 
 void loop() {
   display.displayText(messages[index]);
-  pumpDisplay(display, 1500);
+  refreshDisplayFor(display, 1500);
   index = (index + 1) % (sizeof(messages) / sizeof(messages[0]));
 }
