@@ -1,0 +1,26 @@
+#include <DisplayLib.h>
+
+const uint8_t kDigitPins[4] = {2, 3, 4, 5};
+const uint8_t kSegmentPins[8] = {6, 7, 8, 9, 10, 11, 12, 13};
+
+DisplayLib display(kDigitPins, kSegmentPins, false);
+uint8_t brightnessLevels[] = {100, 40, 10, 0};
+uint8_t index = 0;
+
+void pumpDisplay(DisplayLib& display, unsigned long durationMs) {
+  const unsigned long start = millis();
+  while (millis() - start < durationMs) {
+    display.refresh();
+  }
+}
+
+void setup() {
+  display.begin();
+}
+
+void loop() {
+  display.displayText("bri");
+  display.setBrightness(brightnessLevels[index]);
+  pumpDisplay(display, 1500);
+  index = (index + 1) % (sizeof(brightnessLevels) / sizeof(brightnessLevels[0]));
+}
